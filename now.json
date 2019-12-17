@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "name": "Anonygram",
+  "public": false,
+  "builds": [{ "src": "package.json", "use": "@now/static-build" }],
+  "routes": [
+    {
+      "src": "^/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "^/manifest.json$",
+      "dest": "/manifest.json"
+    },
+    {
+      "src": ".*",
+      "dest": "/index.html"
+    }
+  ],
+  "env": {
+    "REACT_APP_API_ENDPOINT": "@api-endpoint",
+    "REACT_APP_MAP_API_KEY": "@maps-api-key"
+  },
+  "build": {
+    "env": {
+      "REACT_APP_API_ENDPOINT": "@api-endpoint",
+      "REACT_APP_MAP_API_KEY": "@maps-api-key"
+    }
+  }
+}
