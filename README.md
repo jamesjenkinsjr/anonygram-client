@@ -9,13 +9,13 @@
 
 ## Links
 
-- Link to live app: [Live Version](https://anonygram.now.sh/) 
-- Link to client repo: [Client Repo](https://github.com/thinkful-ei-gecko/anonygram-client)
-- Link to API repo: [Server Repo](https://github.com/thinkful-ei-gecko/anonygram-server)
+- Link to live app: [Live Version](https://anonygram.jamesjenkinsjr.now.sh) 
+- Link to client repo: [Client Repo](https://github.com/jamesjenkinsjr/anonygram-client)
+- Link to API repo: [Server Repo](https://github.com/jamesjenkinsjr/anonygram-server)
 
 ## Demo account
       
-       username: admin
+       username: administrator
        password: Password1!
 
 ## Screeenshots 
