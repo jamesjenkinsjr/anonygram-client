@@ -11,7 +11,8 @@ exports[`CommendFeed component renders elements by default 1`] = `
     <label
       htmlFor="newComment"
     >
-      You must be logged in to post a comment. Log in 
+      You must be logged in to post a comment. Log in
+       
       <Link
         to="/login"
       >
@@ -54,7 +55,8 @@ exports[`CommendFeed component renders elements given props 1`] = `
     <label
       htmlFor="newComment"
     >
-      You must be logged in to post a comment. Log in 
+      You must be logged in to post a comment. Log in
+       
       <Link
         to="/login"
       >
