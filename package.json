@@ -24,10 +24,9 @@
     "prebuild": "npm run test",
     "build": "react-scripts build",
     "now-build": "react-scripts build && mv build dist",
+    "test:dev": "react-scripts test",
     "test": "CI=true react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "now --prod ./build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"

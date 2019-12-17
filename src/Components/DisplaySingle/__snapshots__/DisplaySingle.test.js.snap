@@ -13,11 +13,8 @@ exports[`DisplaySingle component renders a submission given props and context 1`
     className="upvote-wrapper"
   >
     <div
-      className="upvote-button"
+      className="upvote-button-no-auth"
     >
-      <KeyboardArrowUpIcon
-        fontSize="large"
-      />
       <p
         className="upvote-count"
       >
