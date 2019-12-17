@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import UserContext from '../../contexts/UserContext';
+import React, { Component } from 'react'
+import UserContext from '../../contexts/UserContext'
 import AuthApiService from '../../services/auth-api-service'
-import './Login.css';
-
+import './Login.css'
 
 class Login extends Component {
-  static contextType = UserContext;
+  static contextType = UserContext
 
   state = {
     error: null
@@ -14,7 +13,7 @@ class Login extends Component {
     this.props.history.push('/')
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault()
     const { username, password } = e.target
 
@@ -22,14 +21,14 @@ class Login extends Component {
 
     AuthApiService.postLogin({
       username: username.value,
-      password: password.value,
+      password: password.value
     })
       .then(res => {
         username.value = ''
         password.value = ''
-        this.context.processLogin(res.anonygramAuthToken);
-        this.props.handleLogin();
-        this.handleLoginSuccess();
+        this.context.processLogin(res.anonygramAuthToken)
+        this.props.handleLogin()
+        this.handleLoginSuccess()
       })
       .catch(res => {
         this.setState({ error: res.error })
@@ -42,39 +41,37 @@ class Login extends Component {
       <section className="login-page">
         <div className="flex-container">
           <h2>Login</h2>
-          <form method="get" className='LoginForm' onSubmit={e => this.handleSubmit(e)}>
-            <div role='alert'>
-              {error && <p>{error}</p>}
-            </div>
+          <form
+            method="get"
+            className="LoginForm"
+            onSubmit={e => this.handleSubmit(e)}
+          >
+            <div role="alert">{error && <p>{error}</p>}</div>
             <div>
-              <label htmlFor='login-username-input'>
-                Username
-          </label>
+              <label htmlFor="login-username-input">Username</label>
               <input
                 type="text"
-                id='login-username-input'
-                name='username'
+                id="login-username-input"
+                name="username"
                 required
               />
             </div>
             <div>
-              <label htmlFor='login-password-input'>
-                Password
-          </label>
+              <label htmlFor="login-password-input">Password</label>
               <input
-                id='login-password-input'
-                name='password'
-                type='password'
+                id="login-password-input"
+                name="password"
+                type="password"
                 required
               />
             </div>
-            <button className='Login__button' type='submit'>
+            <button className="Login__button" type="submit">
               Login
-        </button>
+            </button>
           </form>
         </div>
       </section>
-    );
+    )
   }
 }
 

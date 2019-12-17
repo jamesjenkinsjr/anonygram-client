@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-export const useImageContext = () => useContext(ImageContext);
+import React, { useContext } from 'react'
+export const useImageContext = () => useContext(ImageContext)
 const defaultValues = {
   //vars in ABC order
   alert: '',
@@ -7,7 +7,7 @@ const defaultValues = {
   error: null,
   images: [],
   morePagesAvail: null,
-  newContentLoaded: null, 
+  newContentLoaded: null,
   page: null,
   sort: ['new', 'top'],
   user: null,
@@ -24,8 +24,8 @@ const defaultValues = {
   setMorePagesAvail: () => {},
   setNewContentLoaded: () => {},
   setPage: () => {},
-  setView: () => {},
+  setView: () => {}
 }
 const ImageContext = React.createContext(defaultValues)
 
-export default ImageContext;
+export default ImageContext

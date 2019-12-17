@@ -2,38 +2,38 @@
   IMPORTS
 *******************************************************************/
 //Library Components
-import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { Component } from 'react'
+import { Route, Switch } from 'react-router-dom'
 
 //Components
-import Header from '../Header/Header';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
-import DisplayFeed from '../Display-feed/DisplayFeed';
-import DisplaySingle from '../DisplaySingle/DisplaySingle';
-import OptionsBar from '../OptionsBar/OptionsBar';
-import MapView from '../MapView/MapView';
-import Login from '../Login/Login';
-import Register from '../Register/Register';
-import Information from '../Information/Information';
-import UserAlert from '../UserAlert/UserAlert';
-import NotFoundPage from '../NotFoundPage/NotFoundPage';
+import Header from '../Header/Header'
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary'
+import DisplayFeed from '../Display-feed/DisplayFeed'
+import DisplaySingle from '../DisplaySingle/DisplaySingle'
+import OptionsBar from '../OptionsBar/OptionsBar'
+import MapView from '../MapView/MapView'
+import Login from '../Login/Login'
+import Register from '../Register/Register'
+import Information from '../Information/Information'
+import UserAlert from '../UserAlert/UserAlert'
+import NotFoundPage from '../NotFoundPage/NotFoundPage'
 
 //CSS
-import './App.css';
+import './App.css'
 
 //Contexts, services and the likes
-import ImageApi from '../../services/image-api-service';
-import ImageContext from '../../contexts/ImageContext';
-import UserContext from '../../contexts/UserContext';
-import TokenService from '../../services/token-service';
+import ImageApi from '../../services/image-api-service'
+import ImageContext from '../../contexts/ImageContext'
+import UserContext from '../../contexts/UserContext'
+import TokenService from '../../services/token-service'
 
-import './App.css';
+import './App.css'
 
 export default class App extends Component {
   /*******************************************************************
     CONTEXT CONSUMER
   ********************************************************************/
-  static contextType = UserContext;
+  static contextType = UserContext
 
   /*******************************************************************
     APP STATE
@@ -50,21 +50,21 @@ export default class App extends Component {
     morePagesAvail: true,
     view: '',
     error: null,
-    alert: null,
-  };
+    alert: null
+  }
 
   /*******************************************************************
     LIFECYCLE FUNCTIONS
   *******************************************************************/
   componentDidMount() {
     //Run loading spinner
-    this.setState({ loading: true });
+    this.setState({ loading: true })
 
     //Get user location AND get images for that location (see this.setPosition)
-    this.handleGeolocation();
+    this.handleGeolocation()
 
     // when we refresh the page, we want to fetch the most up-to-date user data (i.e. karma_balance)
-    this.context.updateUserStateFromDatabase();
+    this.context.updateUserStateFromDatabase()
   }
 
   /*******************************************************************
@@ -72,67 +72,67 @@ export default class App extends Component {
   *******************************************************************/
   handleGeolocation = () => {
     if (!!navigator && !!navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.setPosition);
+      navigator.geolocation.getCurrentPosition(this.setPosition)
     }
-  };
+  }
 
   setPosition = position => {
-    const lat = position.coords.latitude;
-    const long = position.coords.longitude;
-    const posObj = { lat, long };
+    const lat = position.coords.latitude
+    const long = position.coords.longitude
+    const posObj = { lat, long }
 
     //After state is updated for user location, the images are called again
     this.setState({ userLocation: posObj }, () => {
-      const { sort, userLocation, page } = this.state;
+      const { sort, userLocation, page } = this.state
       ImageApi.getLocalImages(
         sort[0],
         userLocation.lat,
         userLocation.long,
         page
       ).then(res => {
-        this.setImages(res);
-        this.setState({ loading: false });
-      });
-    });
-  };
+        this.setImages(res)
+        this.setState({ loading: false })
+      })
+    })
+  }
 
   /*******************************************************************
     LOADING
   *******************************************************************/
   setNewContentLoaded = img => {
-    let temp = !this.state.newContentLoaded;
+    let temp = !this.state.newContentLoaded
     this.setState({
       newContentLoaded: temp,
-      images: [img, ...this.state.images],
-    });
-  };
+      images: [img, ...this.state.images]
+    })
+  }
 
   /*******************************************************************
     IMAGES
   *******************************************************************/
   setImages = images => {
-    this.setState({ images });
-  };
+    this.setState({ images })
+  }
 
   setSort = () => {
-    const clone = [...this.state.sort];
-    clone.reverse();
+    const clone = [...this.state.sort]
+    clone.reverse()
     this.setState({ sort: clone }, () => {
-      const { sort, userLocation, page } = this.state;
+      const { sort, userLocation, page } = this.state
       ImageApi.getLocalImages(
         sort[0],
         userLocation.lat,
         userLocation.long,
         page
       ).then(res => {
-        this.setImages(res);
-        this.setState({ loading: false });
+        this.setImages(res)
+        this.setState({ loading: false })
         if (res.length < 10) {
-          this.setMorePagesAvail();
+          this.setMorePagesAvail()
         }
-      });
-    });
-  };
+      })
+    })
+  }
 
   /*******************************************************************
     KARMA
@@ -141,61 +141,61 @@ export default class App extends Component {
     if (this.context.user.karma_balance === 0) {
       this.setAlert(
         "Looks like you're out of karma. You'll get some more soon!"
-      );
-      return;
+      )
+      return
     }
 
     //update the item in a deep copy of the array. you will need to
     //update the state with a copy of the array photos provided
-    const tempImageFeed = this.state.images.map(imgObj => imgObj);
-    const image = tempImageFeed.find(imgObj => imgObj.id === id);
-    const index = tempImageFeed.indexOf(image);
-    tempImageFeed[index].karma_total++;
+    const tempImageFeed = this.state.images.map(imgObj => imgObj)
+    const image = tempImageFeed.find(imgObj => imgObj.id === id)
+    const index = tempImageFeed.indexOf(image)
+    tempImageFeed[index].karma_total++
 
     //set the copy to the context's value
-    this.setState({ images: tempImageFeed });
+    this.setState({ images: tempImageFeed })
 
     // the upvoter has successfully "transferred" 1 karma from their karma_balance
     // to the image's karma_total, so update the current karma_balance
     ImageApi.patchImageKarma(id).then(() => {
-      this.context.updateUserStateFromDatabase();
-    });
-  };
+      this.context.updateUserStateFromDatabase()
+    })
+  }
 
   /*******************************************************************
     VIEW
   *******************************************************************/
   setView = view => {
-    this.setState({ view });
-  };
+    this.setState({ view })
+  }
 
   /*******************************************************************
     PAGE
   *******************************************************************/
 
   setMorePagesAvail = () => {
-    this.setState({ morePagesAvail: false });
-  };
+    this.setState({ morePagesAvail: false })
+  }
 
   setDebounce = () => {
-    const { debounce } = this.state;
+    const { debounce } = this.state
 
-    let debounceHolder = !debounce;
-    this.setState({ debounce: debounceHolder });
+    let debounceHolder = !debounce
+    this.setState({ debounce: debounceHolder })
 
     setTimeout(() => {
-      let debounceHolder = debounce;
-      this.setState({ debounce: debounceHolder });
-    }, 1000);
-  };
+      let debounceHolder = debounce
+      this.setState({ debounce: debounceHolder })
+    }, 1000)
+  }
 
   setPage = page => {
-    const { debounce } = this.state;
+    const { debounce } = this.state
 
     if (!debounce) {
-      this.setDebounce();
+      this.setDebounce()
       this.setState({ page }, () => {
-        const { sort, userLocation } = this.state;
+        const { sort, userLocation } = this.state
         if (page > 1) {
           ImageApi.getLocalImages(
             sort[0],
@@ -203,49 +203,49 @@ export default class App extends Component {
             userLocation.long,
             page
           ).then(res => {
-            const tempImageFeed = this.state.images.map(imgObj => imgObj);
-            const concatFeed = [...tempImageFeed, ...res];
+            const tempImageFeed = this.state.images.map(imgObj => imgObj)
+            const concatFeed = [...tempImageFeed, ...res]
             if (res.length < 10) {
-              this.setMorePagesAvail();
+              this.setMorePagesAvail()
             }
-            this.setImages(concatFeed);
-            this.setState({ loading: false });
-          });
+            this.setImages(concatFeed)
+            this.setState({ loading: false })
+          })
         }
-      });
+      })
     }
-  };
+  }
 
   /*******************************************************************
     USER
   *******************************************************************/
   handleLogin = () => {
     this.setState({
-      user: TokenService.hasAuthToken(),
-    });
-  };
+      user: TokenService.hasAuthToken()
+    })
+  }
 
   /*******************************************************************
     ERROR FUNCTIONS
   *******************************************************************/
   setError = error => {
-    console.error(error);
-    this.setState({ error });
-  };
+    console.error(error)
+    this.setState({ error })
+  }
 
   /*******************************************************************
     ALERT FUNCTIONS
   *******************************************************************/
   setAlert = alert => {
-    this.setState({ alert });
+    this.setState({ alert })
     setTimeout(() => {
-      this.clearAlert();
+      this.clearAlert()
     }, 15000)
-  };
+  }
 
   clearAlert = () => {
-    this.setState({ alert: null });
-  };
+    this.setState({ alert: null })
+  }
 
   /*******************************************************************
     DELETE FUNCTIONS
@@ -253,16 +253,14 @@ export default class App extends Component {
   handleDelete = id => {
     ImageApi.deleteImage(id).then(res => {
       if (res.status === 204) {
-        const tempImageFeed = this.state.images.map(imgObj => imgObj);
-        const filteredFeed = tempImageFeed.filter(imgObj => imgObj.id !== id);
-        this.setState({ images: filteredFeed });
+        const tempImageFeed = this.state.images.map(imgObj => imgObj)
+        const filteredFeed = tempImageFeed.filter(imgObj => imgObj.id !== id)
+        this.setState({ images: filteredFeed })
       } else {
-        this.setAlert(
-          'Sorry, you are only allowed to delete images you posted'
-        );
+        this.setAlert('Sorry, you are only allowed to delete images you posted')
       }
-    });
-  };
+    })
+  }
 
   /*******************************************************************
     ROUTES
@@ -295,19 +293,19 @@ export default class App extends Component {
           )}
         />
       </Switch>
-    );
-  };
+    )
+  }
 
   renderMainRoutes = () => {
     // Display loading spinner if loading
     if (this.state.loading) {
       return (
-        <div className='loader-container'>
+        <div className="loader-container">
           <div className="loader"></div>
         </div>
-      );
+      )
     } else {
-      const { userLocation, newContentLoaded } = this.state;
+      const { userLocation, newContentLoaded } = this.state
       return (
         <ErrorBoundary>
           <Switch>
@@ -366,9 +364,9 @@ export default class App extends Component {
             <Route component={NotFoundPage} />
           </Switch>
         </ErrorBoundary>
-      );
+      )
     }
-  };
+  }
 
   /*******************************************************************
     RENDER
@@ -397,8 +395,8 @@ export default class App extends Component {
       setError: this.setError,
       setMorePagesAvail: this.setMorePagesAvail,
       setNewContentLoaded: this.setNewContentLoaded,
-      setPage: this.setPage,
-    };
+      setPage: this.setPage
+    }
 
     return (
       <ImageContext.Provider value={value}>
@@ -426,6 +424,6 @@ export default class App extends Component {
           />
         </div>
       </ImageContext.Provider>
-    );
-  };
+    )
+  }
 }

@@ -1,15 +1,14 @@
 const randomizer = {
-
   adjectiveOptions: [
-    'Auspicious', 
-    'Bodacious', 
-    'Cozy', 
-    'Diligent', 
-    'Educated', 
-    'Flamboyant', 
-    'Giddy', 
-    'Heroic', 
-    'Impeccable', 
+    'Auspicious',
+    'Bodacious',
+    'Cozy',
+    'Diligent',
+    'Educated',
+    'Flamboyant',
+    'Giddy',
+    'Heroic',
+    'Impeccable',
     'Jocose',
     'Kooky',
     'Legendary',
@@ -24,41 +23,65 @@ const randomizer = {
     'Unequivocal',
     'Volant',
     'Warmhearted',
-    'Xenial', 
+    'Xenial',
     'YaDig',
     'Zazzy'
   ],
   nounOptions: [
-    'Axolotl', 'Bear', 'Cat', 'Dog', 'Emu', 'Flamingo', 'Gerbil', 'HermitCrab', 'Iguana', 'Jellyfish', 'KomodoDragon', 'Liger', 'Manatee', 'Newt', 'Opposum', 'Panther', 'Quokka', 'Rat', 'Seal', 'Turkey', 'Vulture', 'WaterBuffalo', 'XrayTetra', 'Zebu'
+    'Axolotl',
+    'Bear',
+    'Cat',
+    'Dog',
+    'Emu',
+    'Flamingo',
+    'Gerbil',
+    'HermitCrab',
+    'Iguana',
+    'Jellyfish',
+    'KomodoDragon',
+    'Liger',
+    'Manatee',
+    'Newt',
+    'Opposum',
+    'Panther',
+    'Quokka',
+    'Rat',
+    'Seal',
+    'Turkey',
+    'Vulture',
+    'WaterBuffalo',
+    'XrayTetra',
+    'Zebu'
   ],
 
   generateRandomUsername() {
     // use the below if you want the name randomly generated... needs work
-    const adjIndex = Math.floor(Math.random() * this.adjectiveOptions.length);
-    const nounIndex = Math.floor(Math.random() * this.nounOptions.length);
-    const username = this.adjectiveOptions[adjIndex] + this.nounOptions[nounIndex];
-    return username;
+    const adjIndex = Math.floor(Math.random() * this.adjectiveOptions.length)
+    const nounIndex = Math.floor(Math.random() * this.nounOptions.length)
+    const username =
+      this.adjectiveOptions[adjIndex] + this.nounOptions[nounIndex]
+    return username
   },
 
   getAnonUsernames(arrOfComments) {
     //Make an array with only userIds (no duplicates)
-    const userIds = [];
+    const userIds = []
     arrOfComments.map(comment => {
-      const currUserId = comment.user_id;
+      const currUserId = comment.user_id
       if (!userIds.includes(currUserId)) {
         userIds.push(currUserId)
       }
     })
 
     //Make an object; assign usernames (value) for each userId (key) in array
-    const newUsernames = {};
+    const newUsernames = {}
     userIds.map(userId => {
-      newUsernames[userId] = this.generateRandomUsername();
+      newUsernames[userId] = this.generateRandomUsername()
     })
 
     //Return object of userIds and usernames
-    return newUsernames;
-  },
-};
+    return newUsernames
+  }
+}
 
-export default randomizer;
+export default randomizer
