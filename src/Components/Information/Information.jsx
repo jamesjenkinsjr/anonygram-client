@@ -53,7 +53,7 @@ const Information = () => {
       </p>
       <h3 id="demo" className="Information__h3">Demo Account</h3>
       <ul className="Information__demo">
-        <li>UN: admin</li>
+        <li>UN: administrator</li>
         <li>PW: Password1!</li>
       </ul>
       <h4 className="Information__h4">Totally Anonymous</h4>
